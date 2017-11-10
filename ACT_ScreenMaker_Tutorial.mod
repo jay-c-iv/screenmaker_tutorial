@@ -3,13 +3,14 @@ MODULE ACT_ScreenMaker_Tutorial
 !******************************************************
 !               ScreenMaker Set-Up    
 !******************************************************
-!             update variable dynamically w/ TRAP
+!             connect to I/O signals
 !******************************************************
+PERS num cur_velocity;
+PERS num ref_velocity;
+
 PERS robtarget cur_target;
 PERS pos cur_pos;
 PERS num wait := 1;
-
-
 VAR intnum SM_int;
 PERS num timer;
 PERS num cur_piece;
@@ -31,13 +32,15 @@ PROC main()
 ENDPROC
       
 TRAP SM_update
-    timer := ClkRead(smClock);                  !read process timer
-    cur_piece:= nCurrentPoint;                  !find current piece iin list
-    
+     timer := ClkRead(smClock);                  !read process timer
+     cur_piece:= nCurrentPoint;                  !find current piece iin list
      cur_target:= crobt(\WObj:=cur_wobj);       !read current robot position
      cur_pos:= [cur_target.trans.x,             
                             cur_target.trans.y,
                             cur_target.trans.z]; !coordinates of robot position
+                            
+    cur_velocity:= round(aoutput(aoTCPspeed)\Dec:=1)*1000;  
+    ref_velocity:= round(aoutput(aoTCPspeed_Ref)\Dec:=1)*1000;  
 ENDTRAP      
 
 
