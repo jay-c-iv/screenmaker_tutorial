@@ -5,10 +5,14 @@ MODULE ACT_ScreenMaker_Tutorial
 !******************************************************
 !             update variable dynamically w/ TRAP
 !******************************************************
+PERS robtarget cur_target;
+PERS pos cur_pos;
+PERS num wait := 1;
+
+
 VAR intnum SM_int;
 PERS num timer;
 PERS num cur_piece;
-
 PERS num total_pieces;
 PERS num finish_time;
 VAR clock smClock;
@@ -29,6 +33,11 @@ ENDPROC
 TRAP SM_update
     timer := ClkRead(smClock);                  !read process timer
     cur_piece:= nCurrentPoint;                  !find current piece iin list
+    
+     cur_target:= crobt(\WObj:=cur_wobj);       !read current robot position
+     cur_pos:= [cur_target.trans.x,             
+                            cur_target.trans.y,
+                            cur_target.trans.z]; !coordinates of robot position
 ENDTRAP      
 
 
