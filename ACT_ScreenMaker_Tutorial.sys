@@ -1,0 +1,25 @@
+MODULE ACT_ScreenMaker_Tutorial(SYSMODULE)
+
+!****************************************************    
+!VARIABLE DECLARATIONS
+!****************************************************   
+VAR clock newClock;
+PERS num timer;
+PERS robtarget cur_target;
+PERS pos cur_pos;
+PERS num wait := 1;
+
+VAR intnum SM_int;
+
+
+!****************************************************    
+!MAIN TRAP ROUTINE TO UPDATE VARIABLES
+!****************************************************   
+TRAP SM_data
+    cur_target:= CRobT(\WObj:=cur_wobj);
+    cur_pos:= [cur_target.trans.x, cur_target.trans.y, cur_target.trans.z];
+    timer:= ClkRead(newClock);
+ENDTRAP
+
+
+ENDMODULE
