@@ -3,14 +3,15 @@ MODULE ACT_ScreenMaker_Tutorial
 !******************************************************
 !               ScreenMaker Set-Up    
 !******************************************************
-!             create arrays to plot graphs - dynamic
+!             update graph constantly
 !******************************************************
+PERS bool update_graph;
+
 CONST num graph_steps:= 300;
 PERS num graph_array_X{graph_steps};
 PERS num graph_array_Y{graph_steps};
 VAR num currentarraysize_time:=0;
 VAR num currentarraysize_velocity:=0;
-
 PERS num Accel_Perc;
 PERS num Jerk_Perc;
 PERS num work_object;
@@ -66,6 +67,7 @@ PROC main()
 ENDPROC
       
 TRAP SM_update
+    update_graph:=TRUE;                         ! "click" the graph w/ action trigger
      timer := ClkRead(smClock);                  !read process timer
      cur_piece:= nCurrentPoint;                  !find current piece iin list
      cur_target:= crobt(\WObj:=cur_wobj);       !read current robot position
@@ -80,7 +82,8 @@ TRAP SM_update
     
     insertelement_time(timer);
     insertelement_velocity(cur_velocity);
-        
+    waittime .25;
+    update_graph:=FALSE;                        !set bool back to false, for next interrupt
 
 ENDTRAP      
 
