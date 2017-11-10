@@ -3,11 +3,13 @@ MODULE ACT_ScreenMaker_Tutorial
 !******************************************************
 !               ScreenMaker Set-Up    
 !******************************************************
-!             connect to I/O signals
+!             boolean switched by CheckBox
 !******************************************************
+PERS bool ConfJ_on;
+PERS bool ConfL_on;
+
 PERS num cur_velocity;
 PERS num ref_velocity;
-
 PERS robtarget cur_target;
 PERS pos cur_pos;
 PERS num wait := 1;
@@ -21,6 +23,17 @@ VAR clock smClock;
 
 !************************************************************
 PROC main()
+    IF ConfJ_on THEN
+        ConfJ\On;
+    ELSE ConfJ\Off;
+    ENDIF
+    
+    IF ConfL_on THEN
+        ConfL\On;
+    ELSE ConfL\Off;
+    ENDIF
+    
+    
     ClkStart smClock;
     total_pieces:= dim(allPlacePoints,1);       !array of placing targets
     
