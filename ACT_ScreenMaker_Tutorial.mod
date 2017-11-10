@@ -3,11 +3,13 @@ MODULE ACT_ScreenMaker_Tutorial
 !******************************************************
 !               ScreenMaker Set-Up    
 !******************************************************
-!             boolean switched by CheckBox
+!             create arrays for ComboBox switching
 !******************************************************
+PERS num work_object;
+PERS num wobj_array{3}:= [1,2,3];
+
 PERS bool ConfJ_on;
 PERS bool ConfL_on;
-
 PERS num cur_velocity;
 PERS num ref_velocity;
 PERS robtarget cur_target;
@@ -23,6 +25,16 @@ VAR clock smClock;
 
 !************************************************************
 PROC main()
+    IF work_object > 0 AND work_object < 2 THEN
+        cur_wobj:= Wobj_Left;
+        ENDIF
+    IF work_object > 1 AND work_object < 23 THEN
+        cur_wobj:= Wobj_Center;
+        ENDIF
+    IF work_object > 2 AND work_object < 4 THEN
+        cur_wobj:= Wobj_Right;
+        ENDIF
+    
     IF ConfJ_on THEN
         ConfJ\On;
     ELSE ConfJ\Off;
@@ -32,7 +44,6 @@ PROC main()
         ConfL\On;
     ELSE ConfL\Off;
     ENDIF
-    
     
     ClkStart smClock;
     total_pieces:= dim(allPlacePoints,1);       !array of placing targets
