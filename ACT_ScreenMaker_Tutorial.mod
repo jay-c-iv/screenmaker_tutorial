@@ -3,10 +3,13 @@ MODULE ACT_ScreenMaker_Tutorial
 !******************************************************
 !               ScreenMaker Set-Up    
 !******************************************************
-!             create arrays to plot graphs - STATIC
+!             create arrays to plot graphs - dynamic
 !******************************************************
-PERS num graph_array_X{10};
-PERS num graph_array_Y{10};
+CONST num graph_steps:= 300;
+PERS num graph_array_X{graph_steps};
+PERS num graph_array_Y{graph_steps};
+VAR num currentarraysize_time:=0;
+VAR num currentarraysize_velocity:=0;
 
 PERS num Accel_Perc;
 PERS num Jerk_Perc;
@@ -28,14 +31,7 @@ VAR clock smClock;
 
 
 !************************************************************
-PROC main()  
-    FOR i FROM 1 TO dim(graph_array_X,1) DO
-        graph_array_X{i}:= i;
-        ENDFOR
-    FOR i FROM 1 TO dim(graph_array_Y,1) DO
-        graph_array_Y{i}:= i;
-        ENDFOR
-    
+PROC main()      
     Accel_Perc:= 100;
     Jerk_Perc:= 100;
     
@@ -77,13 +73,32 @@ TRAP SM_update
                             cur_target.trans.y,
                             cur_target.trans.z]; !coordinates of robot position
                             
-    cur_velocity:= round(aoutput(aoTCPspeed)\Dec:=1)*1000;  
+    cur_velocity:= round(aoutput(aoTCPspeed)\Dec:=1)*1000;      !format signal data
     ref_velocity:= round(aoutput(aoTCPspeed_Ref)\Dec:=1)*1000;  
     
-    AccSet Accel_Perc, Jerk_Perc;
+    AccSet Accel_Perc, Jerk_Perc;               !override motion settings
+    
+    insertelement_time(timer);
+    insertelement_velocity(cur_velocity);
+        
+
 ENDTRAP      
 
 
+PROC insertelement_time(num element)
+        currentarraysize_time:=currentarraysize_time+1;
+        graph_array_X{currentarraysize_time}:=element;
+        FOR i FROM currentarraysize_time TO dim(graph_array_X,1) DO
+            graph_array_X{i}:= element;
+            ENDFOR
+        ENDPROC
 
-
+PROC insertelement_velocity(num element)
+        currentarraysize_velocity:=currentarraysize_velocity+1;
+        graph_array_Y{currentarraysize_time}:=element;
+        FOR i FROM currentarraysize_velocity TO dim(graph_array_Y,1) DO
+            graph_array_Y{i}:= element;
+            ENDFOR
+        ENDPROC        
+        
 ENDMODULE
