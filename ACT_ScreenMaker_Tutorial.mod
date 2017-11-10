@@ -3,11 +3,13 @@ MODULE ACT_ScreenMaker_Tutorial
 !******************************************************
 !               ScreenMaker Set-Up    
 !******************************************************
-!             change value w/ buttons
+!             create arrays to plot graphs - STATIC
 !******************************************************
+PERS num graph_array_X{10};
+PERS num graph_array_Y{10};
+
 PERS num Accel_Perc;
 PERS num Jerk_Perc;
-
 PERS num work_object;
 PERS num wobj_array{3}:= [1,2,3];
 PERS bool ConfJ_on;
@@ -27,6 +29,13 @@ VAR clock smClock;
 
 !************************************************************
 PROC main()  
+    FOR i FROM 1 TO dim(graph_array_X,1) DO
+        graph_array_X{i}:= i;
+        ENDFOR
+    FOR i FROM 1 TO dim(graph_array_Y,1) DO
+        graph_array_Y{i}:= i;
+        ENDFOR
+    
     Accel_Perc:= 100;
     Jerk_Perc:= 100;
     
