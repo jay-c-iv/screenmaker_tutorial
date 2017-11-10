@@ -5,8 +5,9 @@ MODULE ACT_ScreenMaker_Tutorial
 !******************************************************
 !             update graph constantly
 !******************************************************
-PERS bool update_graph;
+PERS num progress;
 
+PERS bool update_graph;
 CONST num graph_steps:= 300;
 PERS num graph_array_X{graph_steps};
 PERS num graph_array_Y{graph_steps};
@@ -82,9 +83,13 @@ TRAP SM_update
     
     insertelement_time(timer);
     insertelement_velocity(cur_velocity);
+    
+    progress:= (cur_piece/total_pieces)*100;
+    
     waittime .25;
     update_graph:=FALSE;                        !set bool back to false, for next interrupt
 
+    
 ENDTRAP      
 
 
