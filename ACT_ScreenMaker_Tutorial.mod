@@ -3,11 +3,13 @@ MODULE ACT_ScreenMaker_Tutorial
 !******************************************************
 !               ScreenMaker Set-Up    
 !******************************************************
-!             create arrays for ComboBox switching
+!             change value w/ buttons
 !******************************************************
+PERS num Accel_Perc;
+PERS num Jerk_Perc;
+
 PERS num work_object;
 PERS num wobj_array{3}:= [1,2,3];
-
 PERS bool ConfJ_on;
 PERS bool ConfL_on;
 PERS num cur_velocity;
@@ -24,7 +26,10 @@ VAR clock smClock;
 
 
 !************************************************************
-PROC main()
+PROC main()  
+    Accel_Perc:= 100;
+    Jerk_Perc:= 100;
+    
     IF work_object > 0 AND work_object < 2 THEN
         cur_wobj:= Wobj_Left;
         ENDIF
@@ -65,6 +70,8 @@ TRAP SM_update
                             
     cur_velocity:= round(aoutput(aoTCPspeed)\Dec:=1)*1000;  
     ref_velocity:= round(aoutput(aoTCPspeed_Ref)\Dec:=1)*1000;  
+    
+    AccSet Accel_Perc, Jerk_Perc;
 ENDTRAP      
 
 
